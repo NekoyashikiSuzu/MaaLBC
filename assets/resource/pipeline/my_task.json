@@ -8,5 +8,99 @@
         "action": "Custom",
         "custom_action": "my_action_111"
     },
+    "mytask_test": {
+        "recognition": "DirectHit",
+        "action": "DoNothing"
+    },
+    "InMain_ChargeEnkephalin_Enter": {
+        "recognition": "TemplateMatch",
+        "template": "ui/Enkephalin.png",
+        "roi": [360, 604, 80, 78],
+        "action": "Click",
+        "post_delay": 1000,
+        "next": []
+    },
+    "InMain_ChargeEnkephalin_UseLunacy": {
+        "recognition": "TemplateMatch",
+        "template": "ui/UseLunacyButton.png",
+        "roi": [538, 185, 181, 85],
+        "action": "Click",
+        "post_delay": 1000,
+        "next": [
+            "InMain_ChargeEnkephalin_CheckCount"
+        ]
+    },
+    "InMain_ChargeEnkephalin_Modules": {
+        "recognition": "TemplateMatch",
+        "template": "ui/ModulesButton.png",
+        "roi": [412, 192, 166, 73],
+        "action": "Click",
+        "post_delay": 1000,
+        "next": [
+            "InMain_ChargeEnkephalin_Charge_MaxRightArrow"
+        ]
+    },
+    "InMain_ChargeEnkephalin_Charge_MaxRightArrow": {
+        "recognition": "TemplateMatch",
+        "template": "ui/MaxRightArrowButton.png",
+        "roi": [746, 287, 87, 87],
+        "action": "Click",
+        "post_delay": 1000,
+        "on_error": [
+            "InMain_ChargeEnkephalin_Modules"
+        ],
+        "next": [
+            "InMain_ChargeEnkephalin_Charge_Confirm"
+        ]
+    },
+    "InMain_ChargeEnkephalin_Charge_Confirm": {
+        "recognition": "TemplateMatch",
+        "template": "ui/ConfirmButton.png",
+        "roi": [615, 486, 264, 90],
+        "action": "Click",
+        "post_delay": 1000,
+        "next": [
+            "InMain_ChargeEnkephalin_Cancel"
+        ]
+    },
+    "InMain_ChargeEnkephalin_Cancel": {
+        "recognition": "TemplateMatch",
+        "template": "ui/CancelButton.png",
+        "roi": [377, 486, 264, 91],
+        "action": "Click",
+        "post_delay": 1000
+    },
+    "InMain_ChargeEnkephalin_CheckCount": {
+        "recognition": "TemplateMatch",
+        "template": [], // 默认留空，等待 interface.json 注入
+        "roi": [625, 248, 208, 120],
+        "action": "DoNothing",
+        "timeout": 1000, 
+        
+        // 匹配到，已购买次数 >= 需求次数，跳出循环
+        "next": [
+            "InMain_ChargeEnkephalin_Modules"
+        ],
+        
+        // 未匹配到，已购买次数 < 需求次数，去买狂气
+        "on_error": [
+            "InMain_ChargeEnkephalin_UseLunacy"
+        ]
+    },
+    "InMain_ChargeEnkephalin_Charge_ConfirmBuy": {
+        "recognition": "TemplateMatch",
+        "template": "ui/ConfirmButton.png",
+        "roi": [615, 486, 264, 90],
+        "action": "Click",
+        "post_delay": 1000,
+        "next": [
+            "InMain_ChargeEnkephalin_CheckCount"
+        ]
+    },
+
+
+
+
+
     "OcrTask": {}
 }
