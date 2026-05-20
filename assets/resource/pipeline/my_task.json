@@ -17,17 +17,47 @@
         "template": "ui/Enkephalin.png",
         "roi": [360, 604, 80, 78],
         "action": "Click",
-        "post_delay": 1000,
-        "next": []
+        "post_delay": 2000,
+        "timeout": 2000, 
+        "next": [],
+        "on_error": [
+            "InMain_ChargeEnkephalin_reset"
+        ]
+    },
+    "InMain_ChargeEnkephalin_reset": {
+        "recognition": "TemplateMatch",
+        "template": ["ui/Window_pressed.png", "ui/Window_unpressed.png"],
+        "roi": [751, 589, 114, 112],
+        "action": "Click",
+        "post_delay": 2000,
+        "next": [
+            "InMain_ChargeEnkephalin_Enter"
+        ]
     },
     "InMain_ChargeEnkephalin_UseLunacy": {
         "recognition": "TemplateMatch",
         "template": "ui/UseLunacyButton.png",
         "roi": [538, 185, 181, 85],
         "action": "Click",
-        "post_delay": 1000,
+        "post_delay": 2000,
+        "next": [
+            "InMain_ChargeEnkephalin_CheckUsingLunacy"
+        ],
+        "on_error": [
+            "InMain_ChargeEnkephalin_reset"
+        ]
+    },
+    "InMain_ChargeEnkephalin_CheckUsingLunacy": {
+        "recognition": "TemplateMatch",
+        "template": "ui/lunacy_in_charge.png",
+        "roi": [488, 244, 106, 99],
+        "action": "DoNothing",
+        "timeout": 2000, 
         "next": [
             "InMain_ChargeEnkephalin_CheckCount"
+        ],
+        "on_error": [
+            "InMain_ChargeEnkephalin_ConfirmRecharge"
         ]
     },
     "InMain_ChargeEnkephalin_Modules": {
@@ -35,9 +65,12 @@
         "template": "ui/ModulesButton.png",
         "roi": [412, 192, 166, 73],
         "action": "Click",
-        "post_delay": 1000,
+        "post_delay": 2000,
         "next": [
             "InMain_ChargeEnkephalin_Charge_MaxRightArrow"
+        ],
+        "on_error": [
+            "InMain_ChargeEnkephalin_Modules", "InMain_ChargeEnkephalin_reset"
         ]
     },
     "InMain_ChargeEnkephalin_Charge_MaxRightArrow": {
@@ -45,20 +78,30 @@
         "template": "ui/MaxRightArrowButton.png",
         "roi": [746, 287, 87, 87],
         "action": "Click",
-        "post_delay": 1000,
+        "post_delay": 2000,
         "on_error": [
-            "InMain_ChargeEnkephalin_Modules"
+            "InMain_ChargeEnkephalin_Modules", "InMain_ChargeEnkephalin_reset"
         ],
         "next": [
-            "InMain_ChargeEnkephalin_Charge_Confirm"
+            "InMain_ChargeEnkephalin_ConfirmAndOut"
         ]
     },
-    "InMain_ChargeEnkephalin_Charge_Confirm": {
+    // "InMain_ChargeEnkephalin_Charge_Confirm": {
+    //     "recognition": "TemplateMatch",
+    //     "template": "ui/ConfirmButton.png",
+    //     "roi": [615, 486, 264, 90],
+    //     "action": "Click",
+    //     "post_delay": 2000,
+    //     "next": [
+    //         "InMain_ChargeEnkephalin_CheckCount"
+    //     ]
+    // },
+    "InMain_ChargeEnkephalin_ConfirmAndOut": {
         "recognition": "TemplateMatch",
         "template": "ui/ConfirmButton.png",
         "roi": [615, 486, 264, 90],
         "action": "Click",
-        "post_delay": 1000,
+        "post_delay": 2000,
         "next": [
             "InMain_ChargeEnkephalin_Cancel"
         ]
@@ -68,33 +111,30 @@
         "template": "ui/CancelButton.png",
         "roi": [377, 486, 264, 91],
         "action": "Click",
-        "post_delay": 1000
+        "post_delay": 2000
     },
     "InMain_ChargeEnkephalin_CheckCount": {
         "recognition": "TemplateMatch",
         "template": [], // 默认留空，等待 interface.json 注入
         "roi": [625, 248, 208, 120],
+        "threshold": 0.985, 
         "action": "DoNothing",
-        "timeout": 1000, 
-        
-        // 匹配到，已购买次数 >= 需求次数，跳出循环
         "next": [
             "InMain_ChargeEnkephalin_Modules"
-        ],
-        
-        // 未匹配到，已购买次数 < 需求次数，去买狂气
-        "on_error": [
-            "InMain_ChargeEnkephalin_UseLunacy"
         ]
     },
-    "InMain_ChargeEnkephalin_Charge_ConfirmBuy": {
+    "InMain_ChargeEnkephalin_ConfirmRecharge": {
         "recognition": "TemplateMatch",
         "template": "ui/ConfirmButton.png",
         "roi": [615, 486, 264, 90],
         "action": "Click",
         "post_delay": 1000,
+        "timeout": 2000, 
         "next": [
             "InMain_ChargeEnkephalin_CheckCount"
+        ],
+        "on_error": [
+            "InMain_ChargeEnkephalin_ConfirmRecharge"
         ]
     },
 
